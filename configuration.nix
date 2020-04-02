@@ -139,6 +139,7 @@
                                  pkgs.tpm2-tools
                                  pkgs.tpm2-tss
                                  pkgs.landing-zone
+                                 pkgs.landing-zone-debug
                                  pkgs.grub-tb
                                 ];
 

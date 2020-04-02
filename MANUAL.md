@@ -105,4 +105,9 @@ same `linux` and `initrd` cmdlines. If not, copy default cmdlines to
   '';
 ```
 
+15. If you have done any changes in the `/etc/nixos/configuration.nix`, update
+the system
 
+```
+sudo nixos-rebuild switch -I nixpkgs=~/nixpkgs
+```
