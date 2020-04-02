@@ -26,19 +26,35 @@ nix-env -iA nixos.git
 git clone https://github.com/3mdeb/nixpkgs.git -b landing-zone
 ```
 
-5. Clone the NixOS TrenchBoot configuration repo.
+5. Add cachix configuration file to the `/etc/nixos/configuration.nix`
+
+```
+  imports =
+    [ # Include the results of the hardware scan.
+      ./hardware-configuration.nix
+      ./cachix.nix
+    ];
+```
+
+6. To use the 3mdeb binary cache rebuild the system
+
+```
+sudo nixos-rebuild switch -I nixpkgs=~/nixpkgs
+```
+
+7. Clone the NixOS TrenchBoot configuration repo.
 
 ```
 git clone https://github.com/3mdeb/nixos-trenchboot-configs.git
 ```
 
-6. Copy the configuration files to `/etc/nixos`
+8. Copy the configuration files to `/etc/nixos`
 
 ```
 cp nixos-trenchboot-configs/*.nix /etc/nixos
 ```
 
-7. Update the system
+9. Update the system
 
 Change the nixpkgs directory to the 3mdeb nixpkgs repository.
 
@@ -46,24 +62,23 @@ Change the nixpkgs directory to the 3mdeb nixpkgs repository.
 sudo nixos-rebuild switch -I nixpkgs=~/nixpkgs
 ```
 
-8. Reboot the system
+10. Reboot the system
 
 
-9. Install the trenchboot GRUB2 to `/dev/sdX`
+11. Install the trenchboot GRUB2 to `/dev/sdX`
 
 ```
 grub-install /dev/sda
 ```
 
-10. Ensure that slaunch modules are present in `/boot/grub/i386-pc`
+12. Ensure that slaunch modules are present in `/boot/grub/i386-pc`
 
 ```
 # ls |grep slaunch
 slaunch.mod
-slaunch.module
 ```
 
-11. Find landing zone package in nixos storage
+13. Find landing zone package in nixos storage
 
 ```
 # ls /nix/store/ |grep landing-zone
@@ -71,13 +86,13 @@ slaunch.module
 62ik61qxadavc2xix4sm8mbm0fcxlz2i-landing-zone-1.0
 ```
 
-12. Copy `lz_header.bin` to boot directory
+14. Copy `lz_header.bin` to boot directory
 
 ```
 cp /nix/store/62ik61qxadavc2xix4sm8mbm0fcxlz2i-landing-zone-1.0/lz_header.bin /boot/lz_header
 ```
 
-13. `cat` `/boot/grub/grub.cfg` and check `NixOS - Default` menu entry
+15. `cat` `/boot/grub/grub.cfg` and check `NixOS - Default` menu entry
 
 ```
 menuentry "NixOS - Default" {
@@ -88,9 +103,11 @@ search --set=drive2 --fs-uuid 178473b0-282f-4994-96fc-a8e51e2cfdac
 }
 ```
 
-14. Check if `grub.extraEntries` in the `/etc/nixos/configuration.nix`has the
+16. Check if `grub.extraEntries` in the `/etc/nixos/configuration.nix`has the
 same `linux` and `initrd` cmdlines. If not, copy default cmdlines to
 `grub.extraEntries`.
+
+  CHECK TWICE IF YOU COPIED CMDLINES CORRECTLY.
 
 ```
   boot.loader.grub.extraEntries = ''
@@ -105,7 +122,7 @@ same `linux` and `initrd` cmdlines. If not, copy default cmdlines to
   '';
 ```
 
-15. If you have done any changes in the `/etc/nixos/configuration.nix`, update
+17. If you have done any changes in the `/etc/nixos/configuration.nix`, update
 the system
 
 ```
