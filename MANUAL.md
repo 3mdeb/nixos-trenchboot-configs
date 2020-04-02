@@ -23,7 +23,7 @@ nix-env -iA nixos.git
 4. Clone the 3mdeb nixpkgs fork.
 
 ```
-git clone https://github.com/3mdeb/nixpkgs.git -b landing-zone
+git clone https://github.com/3mdeb/nixpkgs.git -b trenchboot_support_2020.03
 ```
 
 5. Add cachix configuration file to the `/etc/nixos/configuration.nix`
