@@ -64,6 +64,9 @@ sudo nixos-rebuild switch -I nixpkgs=~/nixpkgs
 
 10. Reboot the system
 
+```
+reboot
+```
 
 11. Install the trenchboot GRUB2 to `/dev/sdX`
 
