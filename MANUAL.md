@@ -1,6 +1,7 @@
 ## System configuration
 
-1. Install the NixOS as it's shown in the [blog post](#).
+1. Install the NixOS as it's shown in the
+[blog post](https://blog.3mdeb.com/2020/2020-03-31-trenchboot-nlnet-lz/).
 
 2. Install the cachix package.
 
