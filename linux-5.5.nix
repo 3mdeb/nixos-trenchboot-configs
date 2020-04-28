@@ -5,21 +5,24 @@
       linux_sgx_pkg = { fetchurl, buildLinux, ... } @ args:
 
         buildLinux (args // rec {
-          version = "5.1.0";
+          version = "5.5.3";
           modDirVersion = version;
           src = builtins.fetchGit {
-            url = "https://github.com/3mdeb/linux-stable.git";
-            ref = "linux-sl-5.1-sha2-amd";
-            rev = "6821d9b40e9ac9bbd6bac1a5963a87cd6ea735bc";
+            url = "https://github.com/TrenchBoot/linux.git";
+            ref = "linux-sl-5.5";
+            rev = "eed5cdf480ee3761d18294d64ac7e2184229b51c";
           };
 
 
           # branchVersion needs to be x.y
-          extraMeta.branch = 5.1;
+          extraMeta.branch = 5.5;
 
           kernelPatches = [];
 
-          extraConfig = import ./tb-config.nix;
+          extraConfig = ''
+            SECURE_LAUNCH y
+            SECURE_LAUNCH_SHA256 y
+'';
 
       } // (args.argsOverride or {}));
       linux_sgx = pkgs.callPackage linux_sgx_pkg{};

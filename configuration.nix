@@ -9,7 +9,7 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./cachix.nix
-      ./linux-5.1.nix
+      ./linux-5.5.nix
     ];
 
   # Use the GRUB 2 boot loader.
