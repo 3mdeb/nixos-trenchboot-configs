@@ -1,0 +1,44 @@
+image: nixos/nix:2.3
+
+variables:
+  LZ_ZIP_URL: "https://github.com/3mdeb/landing-zone/archive/$LZ_COMMIT.zip"
+  LZ_CLOSURE: "landing-zone.closure-$LZ_COMMIT.bz2"
+  LZ_DEBUG_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
+
+  # before_script:
+  #   - nix-env -i git
+
+stages:
+  - build
+
+build_lz_debug_disabled_local:
+  stage: build
+  only:
+    variables:
+      - $NIXPKG == "landing-zone"
+  script:
+    - wget $LZ_ZIP_URL
+    - unzip $LZ_COMMIT.zip
+    - sed -e "s@version = \".*\";@version = \"0.3.0-g$LZ_COMMIT\";@" -i nixpkgs/local/landing-zone/default.nix
+    - sed -e "s@src =.*;@src = $PWD/$LZ_COMMIT.zip;@" -i nixpkgs/local/landing-zone/default.nix
+    - NIX_STORE_PATH=$(nix-build nixpkgs/local/landing-zone/default.nix)
+    - nix-store --export $NIX_STORE_PATH | bzip2 > $LZ_CLOSURE
+  artifacts:
+    paths:
+      - $LZ_CLOSURE
+
+build_lz_debug_enabled_local:
+  stage: build
+  only:
+    variables:
+      - $NIXPKG == "landing-zone"
+  script:
+    - wget $LZ_ZIP_URL
+    - unzip $LZ_COMMIT.zip
+    - sed -e "s@version = \".*\";@version = \"0.3.0-g$LZ_COMMIT\";@" -i nixpkgs/local/landing-zone-debug/default.nix
+    - sed -e "s@src =.*;@src = $PWD/$LZ_COMMIT.zip;@" -i nixpkgs/local/landing-zone-debug/default.nix
+    - NIX_STORE_PATH=$(nix-build nixpkgs/local/landing-zone-debug/default.nix)
+    - nix-store --export $NIX_STORE_PATH | bzip2 > $LZ_DEBUG_CLOSURE
+  artifacts:
+    paths:
+      - $LZ_DEBUG_CLOSURE

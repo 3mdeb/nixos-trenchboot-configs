@@ -2,9 +2,13 @@ with import <nixpkgs> {};
 
 stdenv.mkDerivation rec {
   pname = "landing-zone";
-  version = "0.3.0+git";
+  version = "0.3.0";
 
-  src = ./../../..;
+  src = builtins.fetchGit {
+  url = "https://github.com/TrenchBoot/landing-zone.git";
+  ref = "master";
+  rev = "89fc4113166823268b07d27f8b13d82223a2361d";
+  };
 
   patches = [ ./compatibility.patch ];
 

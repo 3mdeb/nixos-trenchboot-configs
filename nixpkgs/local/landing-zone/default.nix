@@ -2,14 +2,14 @@ with import <nixpkgs> {};
 
 stdenv.mkDerivation rec {
   pname = "landing-zone";
-  version = "0.3.0-10-gb686582";
+  version = "0.3.0-gLZ_COMMIT";
 
-  src = ./../../..;
+  src = ./../../../..;
 
   patches = [ ./compatibility.patch ];
 
-  nativeBuildInputs = [ hexdump pkgconfig automake gcc-unwrapped ];
-  buildInputs = [ libstdcxx5 ];
+  nativeBuildInputs = [ unzip hexdump pkgconfig automake gcc-unwrapped ];
+  buildInputs = [ unzip libstdcxx5 ];
 
   meta = with lib; {
     homepage = https://github.com/TrenchBoot/landing-zone;
