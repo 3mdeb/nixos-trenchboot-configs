@@ -2,8 +2,10 @@ image: nixos/nix:2.3
 
 variables:
   LZ_ZIP_URL: "https://github.com/3mdeb/landing-zone/archive/$LZ_COMMIT.zip"
-  LZ_CLOSURE: "landing-zone.closure-$LZ_COMMIT.bz2"
+  LZ_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
   LZ_DEBUG_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
+  GRUB_URL: "https://github.com/3mdeb/grub2/archive/$GRUB_COMMIT.zip"
+  GRUB_CLOSURE: "grub-tb-$LZ_COMMIT.closure.bz2"
 
   # before_script:
   #   - nix-env -i git
@@ -42,3 +44,19 @@ build_lz_debug_enabled_local:
   artifacts:
     paths:
       - $LZ_DEBUG_CLOSURE
+
+build_grub:
+  stage: build
+  only:
+    variables:
+      - $NIXPKG == "grub"
+  script:
+    - wget $GRUB_URL
+    - unzip $GRUB_COMMIT.zip
+    - sed -e "s@version = \".*\";@version = \"2.0.4-g$GRUB_COMMIT\";@" -i nixpkgs/local/grub-tb/default.nix
+    - sed -e "s@src =.*;@src = $PWD/$GRUB_COMMIT.zip;@" -i nixpkgs/local/grub-tb/default.nix
+    - NIX_STORE_PATH=$(nix-build nixpkgs/local/grub-tb/default.nix)
+    - nix-store --export $NIX_STORE_PATH | bzip2 > $GRUB_CLOSURE
+  artifacts:
+    paths:
+      - $GRUB_CLOSURE
