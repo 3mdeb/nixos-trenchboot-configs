@@ -5,7 +5,7 @@ variables:
   LZ_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
   LZ_DEBUG_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
   GRUB_URL: "https://github.com/3mdeb/grub2/archive/$GRUB_COMMIT.zip"
-  GRUB_CLOSURE: "grub-tb-$LZ_COMMIT.closure.bz2"
+  GRUB_CLOSURE: "grub-tb-$GRUB_COMMIT.closure.bz2"
 
   # before_script:
   #   - nix-env -i git
