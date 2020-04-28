@@ -8,8 +8,8 @@ stdenv.mkDerivation rec {
 
   patches = [ ./compatibility.patch ];
 
-  nativeBuildInputs = [ unzip hexdump pkgconfig automake gcc-unwrapped ];
-  buildInputs = [ unzip libstdcxx5 ];
+  nativeBuildInputs = [ hexdump pkgconfig automake gcc-unwrapped ];
+  buildInputs = [ libstdcxx5 ];
 
   meta = with lib; {
     homepage = https://github.com/TrenchBoot/landing-zone;

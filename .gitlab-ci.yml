@@ -1,11 +1,13 @@
 image: nixos/nix:2.3
 
 variables:
-  LZ_ZIP_URL: "https://github.com/3mdeb/landing-zone/archive/$LZ_COMMIT.zip"
+  LZ_TAR_URL: "https://github.com/3mdeb/landing-zone/archive/$LZ_COMMIT.tar.gz"
   LZ_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
   LZ_DEBUG_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
-  GRUB_URL: "https://github.com/3mdeb/grub2/archive/$GRUB_COMMIT.zip"
+  GRUB_URL: "https://github.com/3mdeb/grub2/archive/$GRUB_COMMIT.tar.gz"
   GRUB_CLOSURE: "grub-tb-$GRUB_COMMIT.closure.bz2"
+  LINUX_URL: "https://github.com/3mdeb/linux/archive/$LINUX_COMMIT.tar.gz"
+  GRUB_CLOSURE: "linux-tb-$LINUX_COMMIT.closure.bz2"
 
   # before_script:
   #   - nix-env -i git
@@ -19,10 +21,9 @@ build_lz_debug_disabled_local:
     variables:
       - $NIXPKG == "landing-zone"
   script:
-    - wget $LZ_ZIP_URL
-    - unzip $LZ_COMMIT.zip
+    - wget $LZ_TAR_URL
     - sed -e "s@version = \".*\";@version = \"0.3.0-g$LZ_COMMIT\";@" -i nixpkgs/local/landing-zone/default.nix
-    - sed -e "s@src =.*;@src = $PWD/$LZ_COMMIT.zip;@" -i nixpkgs/local/landing-zone/default.nix
+    - sed -e "s@src =.*;@src = $PWD/$LZ_COMMIT.tar.gz;@" -i nixpkgs/local/landing-zone/default.nix
     - NIX_STORE_PATH=$(nix-build nixpkgs/local/landing-zone/default.nix)
     - nix-store --export $NIX_STORE_PATH | bzip2 > $LZ_CLOSURE
   artifacts:
@@ -35,10 +36,9 @@ build_lz_debug_enabled_local:
     variables:
       - $NIXPKG == "landing-zone"
   script:
-    - wget $LZ_ZIP_URL
-    - unzip $LZ_COMMIT.zip
+    - wget $LZ_TAR_URL
     - sed -e "s@version = \".*\";@version = \"0.3.0-g$LZ_COMMIT\";@" -i nixpkgs/local/landing-zone-debug/default.nix
-    - sed -e "s@src =.*;@src = $PWD/$LZ_COMMIT.zip;@" -i nixpkgs/local/landing-zone-debug/default.nix
+    - sed -e "s@src =.*;@src = $PWD/$LZ_COMMIT.tar.gz;@" -i nixpkgs/local/landing-zone-debug/default.nix
     - NIX_STORE_PATH=$(nix-build nixpkgs/local/landing-zone-debug/default.nix)
     - nix-store --export $NIX_STORE_PATH | bzip2 > $LZ_DEBUG_CLOSURE
   artifacts:
@@ -52,11 +52,25 @@ build_grub:
       - $NIXPKG == "grub"
   script:
     - wget $GRUB_URL
-    - unzip $GRUB_COMMIT.zip
     - sed -e "s@version = \".*\";@version = \"2.0.4-g$GRUB_COMMIT\";@" -i nixpkgs/local/grub-tb/default.nix
-    - sed -e "s@src =.*;@src = $PWD/$GRUB_COMMIT.zip;@" -i nixpkgs/local/grub-tb/default.nix
+    - sed -e "s@src =.*;@src = $PWD/$GRUB_COMMIT.tar.gz;@" -i nixpkgs/local/grub-tb/default.nix
     - NIX_STORE_PATH=$(nix-build nixpkgs/local/grub-tb/default.nix)
     - nix-store --export $NIX_STORE_PATH | bzip2 > $GRUB_CLOSURE
   artifacts:
     paths:
       - $GRUB_CLOSURE
+
+build_linux:
+  stage: build
+  only:
+    variables:
+      - $NIXPKG == "linux"
+  script:
+    - wget $LINUX_URL
+    - sed -e "s@version = \".*\";@version = \"5.5.3-g$LINUX_COMMIT\";@" -i nixpkgs/local/linux/linux-5.5.nix
+    - sed -e "s@src =.*;@src = $PWD/$LINUX_COMMIT.tar.gz;@" -i nixpkgs/local/linux/linux-5.5.nix
+    - NIX_STORE_PATH=$(nix-build nixpkgs/local/linux/linux-5.5.nix)
+    - nix-store --export $NIX_STORE_PATH | bzip2 > $LINUX_CLOSURE
+  artifacts:
+    paths:
+      - $LINUX_CLOSURE

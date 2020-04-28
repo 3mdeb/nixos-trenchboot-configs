@@ -48,8 +48,8 @@ stdenv.mkDerivation rec {
     ./fix-bash-completion.patch
   ];
 
-  nativeBuildInputs = [ unzip bison flex python pkgconfig autoconf automake ];
-  buildInputs = [ unzip ncurses libusb freetype gettext lvm2 fuse libtool ]
+  nativeBuildInputs = [ bison flex python pkgconfig autoconf automake ];
+  buildInputs = [ ncurses libusb freetype gettext lvm2 fuse libtool ]
     ++ optional doCheck qemu
     ++ optional zfsSupport zfs;
 
