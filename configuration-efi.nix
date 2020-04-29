@@ -16,8 +16,9 @@
     enable = true;
     editor = false;
   };
+  # Automatically add boot entry to UEFI boot order.
   boot.loader.efi = {
-    canTouchEfiVariables = false;
+    canTouchEfiVariables = true;
   };
   boot.loader.grub = {
     enable = true;
