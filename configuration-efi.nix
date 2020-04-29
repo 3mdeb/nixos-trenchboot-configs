@@ -161,7 +161,7 @@
                                  pkgs.tpm2-tss
                                  pkgs.landing-zone
                                  pkgs.landing-zone-debug
-                                 pkgs.grub-tb
+                                 pkgs.grub-tb-efi
                                 ];
 
   # Grub override
