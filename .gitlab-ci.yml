@@ -67,7 +67,6 @@ build_linux:
       - $NIXPKG == "linux"
   script:
     - wget $LINUX_URL
-    - sed -e "s@version = \".*\";@version = \"5.5.3-g$LINUX_COMMIT\";@" -i nixpkgs/local/linux/linux-5.5.nix
     - sed -e "s@src =.*;@src = $PWD/$LINUX_COMMIT.tar.gz;@" -i nixpkgs/local/linux/linux-5.5.nix
     - NIX_STORE_PATH=$(nix-build -v -E 'with import <nixpkgs> {}; callPackage ./nixpkgs/local/linux/linux-5.5.nix {}')
     - nix-store --export $NIX_STORE_PATH | bzip2 > $LINUX_CLOSURE
