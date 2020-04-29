@@ -62,6 +62,10 @@ build_grub:
 
 build_linux:
   stage: build
+  tags:
+    - local
+    - build
+  timeout: 4h
   only:
     variables:
       - $NIXPKG == "linux"
