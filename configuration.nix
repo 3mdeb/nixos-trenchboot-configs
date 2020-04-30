@@ -9,7 +9,6 @@
     [ # Include the results of the hardware scan.
       ./hardware-configuration.nix
       ./cachix.nix
-      ./linux-5.5.nix
     ];
 
   # Use the GRUB 2 boot loader.
@@ -22,12 +21,12 @@
   boot.loader.grub.device = "/dev/sda"; # or "nodev" for efi only
   boot.loader.grub.extraEntries = ''
     menuentry "NixOS - Secure Launch" {
-    search --set=drive1 --fs-uuid 178473b0-282f-4994-96fc-a8e51e2cfdac
-    search --set=drive2 --fs-uuid 178473b0-282f-4994-96fc-a8e51e2cfdac
+    search --set=drive1 --fs-uuid fdd9e92a-3d69-4bde-8c39-167ff7fba974
+    search --set=drive2 --fs-uuid fdd9e92a-3d69-4bde-8c39-167ff7fba974
       slaunch skinit
       slaunch_module ($drive2)/boot/lz_header
-      linux ($drive2)/nix/store/ymvcgas7b1bv76n35r19g4p142v4cr0b-linux-5.1.0/bzImage systemConfig=/nix/store/b32wgz392q99cls12pkd8adddzbdkprn-nixos-system-nixos-20.09.git.50c3e448fceM init=/nix/store/b32wgz392q99cls12pkd8adddzbdkprn-nixos-system-nixos-20.09.git.50c3e448fceM/init console=ttyS0,115200 earlyprintk=serial,ttyS0,115200 loglevel=4
-      initrd ($drive2)/nix/store/zv2vl35xldkbss1y2fib1nifmw0yvick-initrd-linux-5.1.0/initrd
+      linux ($drive2)/nix/store/3w98shnz1a6nxpqn2wwn728mr12dy3kz-linux-5.5.3/bzImage systemConfig=/nix/store/3adz0xnfnr71hrg84nyawg2rqxrva3x3-nixos-system-nixos-20.09.git.c156a866dd7M init=/nix/store/3adz0xnfnr71hrg84nyawg2rqxrva3x3-nixos-system-nixos-20.09.git.c156a866dd7M/init console=ttyS0,115200 earlyprintk=serial,ttyS0,115200 loglevel=4
+      initrd ($drive2)/nix/store/7q64073svk689cvk36z78zj7y2ifgjdv-initrd-linux-5.5.3/initrd
     }
   '';
 
@@ -145,5 +144,5 @@
 
   # Grub override
   nixpkgs.config.packageOverrides = pkgs: { grub2 = pkgs.grub-tb; };
-
+  boot.kernelPackages = pkgs.linuxPackages_latest;
 }
