@@ -31,11 +31,11 @@
     device = "nodev";
     extraEntries = ''
       menuentry "NixOS - Secure Launch" {
-         --set=drive1 --fs-uuid 4881-6D27
+        --set=drive1 --fs-uuid 4881-6D27
         slaunch skinit
         slaunch_module ($drive1)/boot/lz_header
-        linux ($drive1)/nix/store/ymvcgas7b1bv76n35r19g4p142v4cr0b-linux-5.1.0/bzImage systemConfig=/nix/store/b32wgz392q99cls12pkd8adddzbdkprn-nixos-system-nixos-20.09.git.50c3e448fceM init=/nix/store/b32wgz392q99cls12pkd8adddzbdkprn-nixos-system-nixos-20.09.git.50c3e448fceM/init console=ttyS0,115200 earlyprintk=serial,ttyS0,115200 loglevel=4
-        initrd ($drive1)/nix/store/zv2vl35xldkbss1y2fib1nifmw0yvick-initrd-linux-5.1.0/initrd
+        linux ($drive1)/nix/store/3w98shnz1a6nxpqn2wwn728mr12dy3kz-linux-5.5.3/bzImage systemConfig=/nix/store/3adz0xnfnr71hrg84nyawg2rqxrva3x3-nixos-system-nixos-20.09.git.c156a866dd7M init=/nix/store/3adz0xnfnr71hrg84nyawg2rqxrva3x3-nixos-system-nixos-20.09.git.c156a866dd7M/init console=ttyS0,115200 earlyprintk=serial,ttyS0,115200 loglevel=4
+        initrd ($drive1)/nix/store/7q64073svk689cvk36z78zj7y2ifgjdv-initrd-linux-5.5.3/initrd
       }
       menuentry "Reboot" {
         reboot      
@@ -167,5 +167,4 @@
 
   # Grub override
   nixpkgs.config.packageOverrides = pkgs: { grub2 = pkgs.grub-tb-efi; };
-
 }
