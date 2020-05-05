@@ -33,9 +33,9 @@
       menuentry "NixOS - Secure Launch" {
         --set=drive1 --fs-uuid 4881-6D27
         slaunch skinit
-        slaunch_module ($drive1)/boot/lz_header
-        linux ($drive1)/nix/store/3w98shnz1a6nxpqn2wwn728mr12dy3kz-linux-5.5.3/bzImage systemConfig=/nix/store/3adz0xnfnr71hrg84nyawg2rqxrva3x3-nixos-system-nixos-20.09.git.c156a866dd7M init=/nix/store/3adz0xnfnr71hrg84nyawg2rqxrva3x3-nixos-system-nixos-20.09.git.c156a866dd7M/init console=ttyS0,115200 earlyprintk=serial,ttyS0,115200 loglevel=4
-        initrd ($drive1)/nix/store/7q64073svk689cvk36z78zj7y2ifgjdv-initrd-linux-5.5.3/initrd
+        slaunch_module ($drive1)//lz_header
+        linux ($drive1)//kernels/3w98shnz1a6nxpqn2wwn728mr12dy3kz-linux-5.5.3-bzImage systemConfig=/nix/store/ci38is4cvjlz528jay66h7qpqr6ws22n-nixos-system-nixos-20.09.git.c156a866dd7M init=/nix/store/ci38is4cvjlz528jay66h7qpqr6ws22n-nixos-system-nixos-20.09.git.c156a866dd7M/init console=ttyS0,115200 earlyprintk=serial,ttyS0,115200 console=tty0 loglevel=4
+        initrd ($drive1)//kernels/k1x969q4mwj59hyq3hn2mcxck8s2410a-initrd-linux-5.5.3-initrd
       }
       menuentry "Reboot" {
         reboot      
