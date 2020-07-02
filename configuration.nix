@@ -140,6 +140,7 @@
                                  pkgs.landing-zone
                                  pkgs.landing-zone-debug
                                  pkgs.grub-tb
+				 pkgs.cbmem-tb
                                 ];
 
   # Grub override
