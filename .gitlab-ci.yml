@@ -7,7 +7,8 @@ variables:
   GRUB_URL: "https://github.com/$GITHUB_GROUP/grub/archive/$GRUB_COMMIT.tar.gz"
   GRUB_CLOSURE: "grub-tb-$GRUB_COMMIT.closure.bz2"
   LINUX_URL: "https://github.com/$GITHUB_GROUP/linux/archive/$LINUX_COMMIT.tar.gz"
-  GRUB_CLOSURE: "linux-tb-$LINUX_COMMIT.closure.bz2"
+  LINUX_CLOSURE: "linux-tb-$LINUX_COMMIT.closure.bz2"
+  GIT_SUBMODULE_STRATEGY: recursive
 
   # before_script:
   #   - nix-env -i git
