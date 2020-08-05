@@ -10,9 +10,6 @@ variables:
   LINUX_CLOSURE: "linux-tb-$LINUX_COMMIT.closure.bz2"
   GIT_SUBMODULE_STRATEGY: recursive
 
-before_script:
-  - nix-env -i git
-
 stages:
   - build
 
@@ -22,6 +19,7 @@ build_lz_debug_disabled_local:
     variables:
       - $NIXPKG == "landing-zone"
   script:
+    - nix-env -i git
     - git clone $LZ_GIT_URL
     - cd landing-zone
     - git checkout $LZ_COMMIT
@@ -42,6 +40,7 @@ build_lz_debug_enabled_local:
     variables:
       - $NIXPKG == "landing-zone"
   script:
+    - nix-env -i git
     - git clone $LZ_GIT_URL
     - cd landing-zone
     - git checkout $LZ_COMMIT
