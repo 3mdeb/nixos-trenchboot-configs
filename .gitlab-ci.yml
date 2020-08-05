@@ -1,7 +1,7 @@
 image: nixos/nix:2.3
 
 variables:
-  LZ_TAR_URL: "https://github.com/$GITHUB_GROUP/landing-zone/archive/$LZ_COMMIT.tar.gz"
+  LZ_GIT_URL: "https://github.com/$GITHUB_GROUP/landing-zone.git"
   LZ_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
   LZ_DEBUG_CLOSURE: "landing-zone-$LZ_COMMIT.closure.bz2"
   GRUB_URL: "https://github.com/$GITHUB_GROUP/grub/archive/$GRUB_COMMIT.tar.gz"
@@ -10,8 +10,8 @@ variables:
   LINUX_CLOSURE: "linux-tb-$LINUX_COMMIT.closure.bz2"
   GIT_SUBMODULE_STRATEGY: recursive
 
-  # before_script:
-  #   - nix-env -i git
+before_script:
+  - nix-env -i git
 
 stages:
   - build
@@ -22,9 +22,13 @@ build_lz_debug_disabled_local:
     variables:
       - $NIXPKG == "landing-zone"
   script:
-    - wget $LZ_TAR_URL
+    - git clone $LZ_GIT_URL
+    - cd landing-zone
+    - git checkout $LZ_COMMIT
+    - git submodule init
+    - git submodule update
     - sed -e "s@version = \".*\";@version = \"0.3.0-g$LZ_COMMIT\";@" -i nixpkgs/local/landing-zone/default.nix
-    - sed -e "s@src =.*;@src = $PWD/$LZ_COMMIT.tar.gz;@" -i nixpkgs/local/landing-zone/default.nix
+    - sed -e "s@src =.*;@src = $PWD/landing-zone;@" -i nixpkgs/local/landing-zone/default.nix
     - NIX_STORE_PATH=$(nix-build nixpkgs/local/landing-zone/default.nix)
     - nix-store --export $NIX_STORE_PATH | bzip2 > $LZ_CLOSURE
   artifacts:
@@ -37,9 +41,13 @@ build_lz_debug_enabled_local:
     variables:
       - $NIXPKG == "landing-zone"
   script:
-    - wget $LZ_TAR_URL
+    - git clone $LZ_GIT_URL
+    - cd landing-zone
+    - git checkout $LZ_COMMIT
+    - git submodule init
+    - git submodule update
     - sed -e "s@version = \".*\";@version = \"0.3.0-g$LZ_COMMIT\";@" -i nixpkgs/local/landing-zone-debug/default.nix
-    - sed -e "s@src =.*;@src = $PWD/$LZ_COMMIT.tar.gz;@" -i nixpkgs/local/landing-zone-debug/default.nix
+    - sed -e "s@src =.*;@src = $PWD/landing-zone;@" -i nixpkgs/local/landing-zone-debug/default.nix
     - NIX_STORE_PATH=$(nix-build nixpkgs/local/landing-zone-debug/default.nix)
     - nix-store --export $NIX_STORE_PATH | bzip2 > $LZ_DEBUG_CLOSURE
   artifacts:
