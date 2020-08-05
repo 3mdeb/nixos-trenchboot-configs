@@ -27,6 +27,7 @@ build_lz_debug_disabled_local:
     - git checkout $LZ_COMMIT
     - git submodule init
     - git submodule update
+    - cd ..
     - sed -e "s@version = \".*\";@version = \"0.3.0-g$LZ_COMMIT\";@" -i nixpkgs/local/landing-zone/default.nix
     - sed -e "s@src =.*;@src = $PWD/landing-zone;@" -i nixpkgs/local/landing-zone/default.nix
     - NIX_STORE_PATH=$(nix-build nixpkgs/local/landing-zone/default.nix)
@@ -46,6 +47,7 @@ build_lz_debug_enabled_local:
     - git checkout $LZ_COMMIT
     - git submodule init
     - git submodule update
+    - cd ..
     - sed -e "s@version = \".*\";@version = \"0.3.0-g$LZ_COMMIT\";@" -i nixpkgs/local/landing-zone-debug/default.nix
     - sed -e "s@src =.*;@src = $PWD/landing-zone;@" -i nixpkgs/local/landing-zone-debug/default.nix
     - NIX_STORE_PATH=$(nix-build nixpkgs/local/landing-zone-debug/default.nix)
